@@ -15,6 +15,11 @@ custom:
 provider:
   name: aws
   runtime: nodejs18.x
+  httpApi:
+    cors:
+      allowedOrigins:
+        - https://portfolio-sotacode.vercel.app/
+        - http://localhost:3000
   environment:
     EMAIL_CONTACT: ${env:EMAIL_ORIGIN_CONTACT}
     EMAIL_PASSWORD: ${env:EMAIL_ORIGIN_PASSWORD}

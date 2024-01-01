@@ -11,12 +11,12 @@ module.exports.handler = async (event) => {
       pass: process.env.EMAIL_ORIGIN_PASSWORD
     }
   });
-  const {name, email, description} = JSON.parse(event.body)
+  const {name, email, description, subject} = JSON.parse(event.body)
   console.log(name, email, description)
   const mailOptions = {
     from: `${name} <${process.env.EMAIL_CONTACT}>`,
     to: process.env.EMAIL_TO_SEND,
-    subject: 'Correo de ' + name,
+    subject: subject,
     html: htmlToSend(name, email, description)
   };
   const info = await transporter.sendMail(mailOptions)
