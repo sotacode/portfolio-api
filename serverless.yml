@@ -1,0 +1,25 @@
+org: sotacode
+app: sotacode-api
+service: sotacode-api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+
+functions:
+  send-email:
+    handler: functions/sendEmail.handler
+    events:
+      - httpApi:
+          path: /send-email
+          method: get
+  hello:
+    handler: functions/helloWorld.handler
+    events:
+      - httpApi:
+          path: /hello
+          method: get
+
+plugins:
+  - serverless-offline
