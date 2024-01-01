@@ -3,17 +3,31 @@ app: sotacode-api
 service: sotacode-api
 frameworkVersion: '3'
 
+useDotenv: true
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+custom:
+  myStage: ${opt:stage, 'dev'}
+
 provider:
   name: aws
   runtime: nodejs18.x
+  environment:
+    EMAIL_CONTACT: ${env:EMAIL_ORIGIN_CONTACT}
+    EMAIL_PASSWORD: ${env:EMAIL_ORIGIN_PASSWORD}
+    EMAIL_TO_SEND: ${env:EMAIL_TO_SEND}
 
 functions:
   send-email:
     handler: functions/sendEmail.handler
+    timeout: 25
     events:
       - httpApi:
           path: /send-email
-          method: get
+          method: post
   hello:
     handler: functions/helloWorld.handler
     events:
@@ -21,5 +35,3 @@ functions:
           path: /hello
           method: get
 
-plugins:
-  - serverless-offline

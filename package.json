@@ -1,5 +1,9 @@
 {
   "devDependencies": {
+    "serverless-dotenv-plugin": "^6.0.0",
     "serverless-offline": "^13.3.2"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.8"
   }
 }
