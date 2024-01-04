@@ -12,7 +12,6 @@ module.exports.handler = async (event) => {
     }
   });
   const {name, email, description, subject} = JSON.parse(event.body)
-  console.log(name, email, description)
   const mailOptions = {
     from: `${name} <${process.env.EMAIL_CONTACT}>`,
     to: process.env.EMAIL_TO_SEND,
@@ -20,7 +19,6 @@ module.exports.handler = async (event) => {
     html: htmlToSend(name, email, description)
   };
   const info = await transporter.sendMail(mailOptions)
-  console.log(info)
 
   return {
     statusCode: 200,

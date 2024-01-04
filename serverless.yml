@@ -9,21 +9,49 @@ plugins:
   - serverless-offline
   - serverless-dotenv-plugin
 
-custom:
-  myStage: ${opt:stage, 'dev'}
+
+resources:
+  Resources:
+    ResumeBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: "${opt:stage, 'dev'}-${env:BUCKET_RESUME}"
 
 provider:
   name: aws
   runtime: nodejs18.x
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 's3:GetObject'
+          Resource:
+            Fn::Join:
+              - ''
+              - - 'arn:aws:s3:::*'
   httpApi:
     cors:
       allowedOrigins:
-        - https://portfolio-sotacode.vercel.app/
-        - http://localhost:3000
+        - 'https://portfolio-sotacode.vercel.app'
+        - 'http://localhost:3000'
+      allowedHeaders:
+        - Content-Type
+        - X-Amz-Date
+        - Authorization
+        - X-Api-Key
+        - X-Amz-Security-Token
+        - X-Amz-User-Agent
+      allowCredentials: false
   environment:
     EMAIL_CONTACT: ${env:EMAIL_ORIGIN_CONTACT}
     EMAIL_PASSWORD: ${env:EMAIL_ORIGIN_PASSWORD}
     EMAIL_TO_SEND: ${env:EMAIL_TO_SEND}
+    BUCKET_RESUME: ${env:BUCKET_RESUME}
+    NAME_FILE_RESUME: ${env:NAME_FILE_RESUME}
+
+custom:
+  myStage: ${opt:stage, 'dev'}
 
 functions:
   send-email:
@@ -33,10 +61,10 @@ functions:
       - httpApi:
           path: /send-email
           method: post
-  hello:
-    handler: functions/helloWorld.handler
+  get-resume:
+    handler: functions/getResume.handler
     events:
       - httpApi:
-          path: /hello
+          path: /get-resume
           method: get
 
