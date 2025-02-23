@@ -1,7 +1,6 @@
-org: sotacode
-app: sotacode-api
-service: sotacode-api
-frameworkVersion: '3'
+org: sotacodedev
+app: portfolio-api
+service: portfolio-api
 
 useDotenv: true
 
@@ -25,15 +24,18 @@ provider:
       statements:
         - Effect: 'Allow'
           Action:
-            - 's3:GetObject'
-          Resource:
-            Fn::Join:
-              - ''
-              - - 'arn:aws:s3:::*'
+            - 's3:*'
+            - 'lambda:*'
+            - 'logs:*'
+            - 'apigateway:*'
+            - 'cloudformation:*'
+          Resource: '*'
   httpApi:
     cors:
       allowedOrigins:
         - 'https://portfolio-sotacode.vercel.app'
+        - 'https://www.nelsota.com/'
+        - 'https://www.sotacode.dev/'
         - 'http://localhost:3000'
       allowedHeaders:
         - Content-Type
